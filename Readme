@@ -1,0 +1,221 @@
+La empresa MensajeriaExpress 🏤busca automatizar los envios de mercancia para
+rastrearlos y actualizarlos.
+Modelos de negocio 📫
+MensajeriaExpress cuenta con dos tipos de usuario, cliente y empleado, los cuales estan
+representados por los siguientes atributos.
+Cliente:
+● cedula: identificador unico del cliente (campo entero de maximo 10 digitos.)
+● nombre del cliente
+● Apellidos
+● celular
+● correo electronido
+● direecion de residencia
+● ciudad
+Empleado:
+● cedula: identificador unico del empleado (campo entero de maximo 10 digitos.)
+● nombre del empleado
+● Apellidos
+● celular
+● correo electronido
+● direecion de residencia
+● ciudad
+● Antiguedad en la empresa
+● rh (tipo de sangre)
+● tipo empleado: que solo puede ser alguno de estos 3 tipos (CONDUCTOR,
+REPARTIDOR, COORDINADOR).
+Ademas de esto para el negocio un paquete esta definido por los siguientes atributos:
+● identificacion paquete (que debe ser autogeneado por el sistema).
+● tipo de paquete que puede ser ( LIVIANO, MEDIANO, GRANDE).
+● peso.
+● valor declarado.
+Un envio esta deinifido por los siguiente atributos:
+● numero de guia: identificador único del envio (campo alfanumérico de máximo 10
+dígitos)
+● Cliente
+● ciudad origen
+● ciudad destino
+● direccion destino
+● nombre persona que recibe
+● numero celular persona que recibe.
+● hora de entrega
+● estado del envio que puede ser (RECIBIDO, EN RUTA, ENTREGADO)
+● valor del envio
+● paquete: Un envio puede tener solo un paquete.
+OBJETIVO.
+Crear un microservicio cual permita llevar a cabo las siguientes funcionalidades.
+Funcionalidades 👍
+Se desea tener un servicio para la gestion de Empleados la cual va permitir.
+1. Crear un empleado
+Ejemplo de la petencion.
+{
+"cedula": 12345,
+"nombre":"Mateo",
+"Apellido":"Zapata",
+"celular": 3046303886
+"correoElectronico" : "mateo@gmail.com"
+"direccionResidencia" :"calle 46 # 69-90"
+"ciudad" : "Medellin"
+"AntiguedadEmpresa" : 1
+"rh" : o+
+"tipoEmpleado": "REPARTIDOR"
+}
+2. Actualizar un empleado
+3. Eliminar un empleado (se debe eliminar por cedula)
+{"mensaje" : "El empleado con cedula 1234 fue eliminado con exito"}
+4. Obtener un empleado. (se obtiene la informacion por cedula) y debe retornar toda la
+infromacion del empleado.
+Ademas de esto se desea tener otro servicio para la gestion de clientes.
+1. Crear un Cliente
+Ejemplo de la petencion.
+{
+"cedula": 12345,
+"nombre":"Mateo",
+"Apellido":"Zapata",
+"celular": 3046303886
+"correoElectronico" : "mateo@gmail.com"
+"direccionResidencia" :"calle 46 # 69-90"
+"ciudad" : "Medellin"
+}
+2. Actualizar un cliente
+3. Eliminar un cliente (se debe eliminar por cedula), debe retornar un mensaje diciendo
+si se pudo eliminar o no ; ejemplo: {
+"mensaje" : "El empleado con cedula 1234 fue eliminado con exito"}
+4. Obtener un cliente. (se obtiene la informacion por cedula) y debe retornar toda la
+infromacion del cliente.
+Una vez que un cliente desee enviar un paquete este se debe de crear en nuestro sistema
+por lo cual debemos de realizar un servicio para la gestion de nuestros envios el cual tendra
+las siguientes funcionalidades.
+El servicio de envios se debe poder crear un envio, y este debe de recibir la siguiente
+informacion. 👍
+a. cedula del cliente,
+b. ciudad origen,
+c. ciudad destino,
+d. direccion destino,
+e. nombre que recibe ,
+f. celular,
+g. valor declarado del paquete
+h. peso. representado en kilos.
+Ejemplo de la peticion:
+{
+"cedulaCliente": 12345,
+"ciudadOrigen":"Medellin",
+"ciudadDestino":"Bogota",
+"direccionDestino": "calle 46 # 69-90",
+"nombreRecibe" : "Juan Manuel"
+"celular" : 3046303886
+"valorDeclaradoPaquete" : 19,000
+"peso" : 1
+}
+(todos los parametros son obligatorios) si falta algun parametro debemos retornar un
+mensaje de error que hace falta informacion para realizar el envio.
+Para realizar un envio se debe tener en cuenta las siguientes validaciones de negocio.
+el remitente que en este caso es un cliente debe de estar previamente registrado en
+nuestra base de datos, si no lo esta no podra enviar el paquete y debemos retornar
+un mensaje de error. {
+"mensaje" : "El cliente con cedula 1234 debe de estar registrado para
+poder enviar un paquete"
+}
+De acuerdo al peso el sistema debe de asignar el tipo de paquete:
+● Si pesa menos de 2 kilos LIVIANO.
+● Si pesa mas de 2 y menos de 5 kilos MEDIANO
+● Si pesa mas de 5 kilos GRANDE.
+Para calcular el valor del envio se debe realizar de la siguiente forma
+Si el paquete es GRANDE el valor sera de 50 mil.
+Si el paquete es MEDIANO el valor sera 40 mil.
+si el paquete es LIVIANO el valor es de 30 mil.
+El estado inicial del envio sera RECIBIDO, no se puede asignar otro estado que no
+sea este. (el sistema lo auto asigna por defecto)
+Si todas las validaciones anteriores fueron exitosas se debe guardar la informacion
+en las respectivas tablas de nuestra base de datos y generar el numero de guia
+aleatorio para nuestro envio.
+Este servicio debera retornar al usuario el numero de guia y el estado inicial del
+paquete que sera RECIBIDO. ejemplo:
+{
+"numeroGuia":"DASD154212",
+"estadoEnvio": "RECIBIDO"
+}
+El servicio de envios se debe poder obtener la informacion de un envio, para esto se
+recibiera el numero de guia y debe retornar toda la infromacion del envio.
+ejemplo peticion:
+{
+"numeroGuia": ASD12345,
+}
+respuesta de la peticion
+{
+"cedulaCliente": 12345,
+"nombreRemitente" Mateo
+"ciudadOrigen":"Medellin",
+"ciudadDestino":"Bogota",
+"direccionDestino": "calle 46 # 69-90",
+"nombreRecibe" : "Juan Manuel"
+"celular" : 3046303886
+"valorDeclaradoPaquete" : 19,000
+"peso" : 1
+"valorEnvio: 30.000
+"estadoEnvio: "EN RUTA"
+}
+En este mismo servicio se debe poder actualizar el estado del paquete.
+Ejemplo de la peticion:
+{
+"numeroGuia": 12345,
+"estadoEnvio":"EN RUTA"
+"cedulaEmpleado": 123
+}
+para esto se debe tener en cuenta las siguientes validaciones.
+Se debe buscar la informacion del empleado mediante la cedula recibida.
+Si el empleado no existe se debe retornar un error: "mensaje" : "El empleado con
+cedula 1234 no existe en nuestra compania" }
+Solo los tipos de empleados (REPARTIDOR Y COORDINADOR) podran cambiar el
+estado del paquete.
+si el estado del envio esta en RECIBIDO, solo se podra cambiar al siguiente estado
+que es EN RUTA.
+Si el estado del envio esta EN RUTA, solo se podra cambiar al estado final
+ENTREGADO
+No se puede cambiar estado entre RECIBIDO a ENTREGADO (si esto sucede se
+debera retornar un error ) ejemplo : {"mensaje" : "el cambio de estado no cumple
+con las validaciones" }
+Si se cumplieron con las validaciones se debe de guardar la informacion en la base de
+datos y se debe retornar lo siguiente.
+{
+"numeroGuia": 12345,
+"ultimoEstado":"EN RUTA"
+}
+Ademas de esto el servicio de envios debe de filtrar para mostrar todos los pedidos que se
+encuentren en determinado estado.
+Ejemplo peticion:
+{
+"estadoEnvio": RECIBIDO
+"cedulaEmpleado": 123
+}
+para esto se debe tener en cuenta las siguientes validaciones.
+Se debe buscar la informacion del empleado mediante la cedula recibida.
+Si el empleado no existe se debe retornar un error: "mensaje" : "El empleado con
+cedula 1234 no existe en nuestra compania" }
+Respuesta:
+respuesta de la peticion
+{
+[ "cedulaCliente": 3453453,
+"ciudadOrigen":"Medellin",
+"ciudadDestino":"Bogota",
+"direccionDestino": "calle 46 # 69-90",
+"nombreRecibe" : "Juan Manuel"
+"celular" : 3046303886
+"valorDeclaradoPaquete" : 19,000
+"peso" : 1
+"valorEnvio: 30.000
+"estadoEnvio: "RECIBIDO"
+"numeroGuia": ASD12345],
+[
+"cedulaCliente": 1233453445,
+"ciudadOrigen":"Villavicencio",
+"ciudadDestino":"Bogota",
+"direccionDestino": "calle 146 # 80A",
+"nombreRecibe" : "Uriel"
+"celular" : 306342
+"valorDeclaradoPaquete" : 9,000
+"peso" : 1
+"valorEnvio: 20.000
+"estadoEnvio: "RECIBIDO",
+"numeroGuia": WERW76]
+}
+https://app.diagrams.net/?src=about#HMafesita23%2FMensajeria%2Fmain%2FDiagrama%20sin%20t%C3%ADtulo.drawio
