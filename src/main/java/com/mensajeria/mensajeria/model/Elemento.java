@@ -1,4 +1,4 @@
-package com.mensajeria.mensajeria;
+package com.mensajeria.mensajeria.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
